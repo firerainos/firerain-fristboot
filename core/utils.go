@@ -6,7 +6,16 @@ import (
 )
 
 func UserAdd(username,password string) error {
-	cmd := exec.Command("useradd","-m","-g","user","-G","wheel",username)
+	pkgs := []string{"bumblebee","wireshark","tomcat7","tomcat8","sambashare"}
+
+	groups := "wheel"
+	for _,pkg := range pkgs {
+		if SearchPackage(pkg) {
+			groups += ","+pkg
+		}
+	}
+
+	cmd := exec.Command("useradd","-m","-g","users","-G",groups,username)
 	if err:= cmd.Run();err!=nil{
 		return err
 	}
