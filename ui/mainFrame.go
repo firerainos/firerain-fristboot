@@ -11,6 +11,7 @@ type MainFrame struct {
 
 	welcomePage *page.WelcomePage
 	accountPage *page.AccountPage
+	endPage *page.EndPage
 
 	backButton, nextButton *widgets.QPushButton
 
@@ -34,9 +35,10 @@ func (m *MainFrame) init() {
 
 	m.welcomePage = page.NewWelcomePage(m, 0)
 	m.accountPage = page.NewAccountPage(m, 0)
+	m.endPage = page.NewEndPage(m, 0)
 
-	m.backButton = widgets.NewQPushButton2("back", m)
-	m.nextButton = widgets.NewQPushButton2("next", m)
+	m.backButton = widgets.NewQPushButton2("返回", m)
+	m.nextButton = widgets.NewQPushButton2("继续", m)
 
 	m.backButton.SetVisible(false)
 
@@ -49,6 +51,7 @@ func (m *MainFrame) init() {
 
 	m.stackLayout.AddWidget(m.welcomePage)
 	m.stackLayout.AddWidget(m.accountPage)
+	m.stackLayout.AddWidget(m.endPage)
 
 	vboxLayout.AddLayout(m.stackLayout, 1)
 	vboxLayout.AddLayout(hboxLayout, 1)
@@ -70,21 +73,24 @@ func (m *MainFrame) initConnect() {
 	})
 
 	m.backButton.ConnectClicked(func(checked bool) {
+		if m.nextButton.Text() == "确定"{
+			m.nextButton.SetText("继续")
+		}
 		m.stackLayout.SetCurrentIndex(m.stackLayout.CurrentIndex() - 1)
 	})
 
 	m.nextButton.ConnectClicked(func(checked bool) {
-		index := m.stackLayout.CurrentIndex()
-		switch index {
-		case 1:
+		switch m.nextButton.Text() {
+		case "继续":
+			m.nextButton.SetText("确定")
+		case "确定":
 			password := m.accountPage.Password.Text()
 			againPassword := m.accountPage.AgainPassword.Text()
 			if password != againPassword {
 				m.accountPage.SetTips("确认密码不匹配")
 				return
 			}
-		case 2:
 		}
-		m.stackLayout.SetCurrentIndex(index + 1)
+		m.stackLayout.SetCurrentIndex(m.stackLayout.CurrentIndex() + 1)
 	})
 }
