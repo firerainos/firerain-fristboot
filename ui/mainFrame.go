@@ -4,13 +4,13 @@ import (
 	"github.com/firerainos/firerain-fristboot/ui/page"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
-	"log"
 )
 
 type MainFrame struct {
 	*widgets.QFrame
 
 	welcomePage *page.WelcomePage
+	accountPage *page.AccountPage
 
 	backButton, nextButton *widgets.QPushButton
 
@@ -33,6 +33,7 @@ func (m *MainFrame) init() {
 	m.stackLayout = widgets.NewQStackedLayout()
 
 	m.welcomePage = page.NewWelcomePage(m, 0)
+	m.accountPage = page.NewAccountPage(m, 0)
 
 	m.backButton = widgets.NewQPushButton2("back", m)
 	m.nextButton = widgets.NewQPushButton2("next", m)
@@ -47,6 +48,7 @@ func (m *MainFrame) init() {
 	hboxLayout.AddStretch(1)
 
 	m.stackLayout.AddWidget(m.welcomePage)
+	m.stackLayout.AddWidget(m.accountPage)
 
 	vboxLayout.AddLayout(m.stackLayout, 1)
 	vboxLayout.AddLayout(hboxLayout, 1)
@@ -73,8 +75,14 @@ func (m *MainFrame) initConnect() {
 
 	m.nextButton.ConnectClicked(func(checked bool) {
 		index := m.stackLayout.CurrentIndex()
-		log.Println(index)
 		switch index {
+		case 1:
+			password := m.accountPage.Password.Text()
+			againPassword := m.accountPage.AgainPassword.Text()
+			if password != againPassword {
+				m.accountPage.SetTips("确认密码不匹配")
+				return
+			}
 		case 2:
 		}
 		m.stackLayout.SetCurrentIndex(index + 1)
