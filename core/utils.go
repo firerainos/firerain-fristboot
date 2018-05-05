@@ -3,6 +3,8 @@ package core
 import (
 	"os/exec"
 	"io/ioutil"
+	"os"
+	"fmt"
 )
 
 func UserAdd(username,password string) error {
@@ -45,4 +47,30 @@ export LC_CTYPE=zh_CN.UTF-8
 `
 
 	return ioutil.WriteFile("/home/"+username+"/.xprofile",[]byte(profile),0644)
+}
+
+func SetIM(username string) error {
+	profile := `
+export GTK_IM_MODULE=%s
+export QT_IM_MODULE=%s
+export XMODIFIERS="@im=%s"
+`
+	if SearchPackage("fcitx5-git") {
+		profile = fmt.Sprintf(profile,"fcitx5","fcitx5","fcitx")
+	} else if SearchPackage("fcitx") {
+		profile = fmt.Sprintf(profile,"fcitx","fcitx","fcitx")
+	} else if SearchPackage("ibus") {
+		profile = fmt.Sprintf(profile,"ibus","ibus","ibus")
+
+		profile += "\nibus-daemon -x -d"
+	}
+
+	f, err := os.OpenFile("/home/"+username+"/.xprofile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	_,err=f.WriteString(profile)
+	return err
 }
