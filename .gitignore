@@ -18,3 +18,6 @@
 moc*.go
 moc*.h
 moc*.cpp
+
+rcc.cpp
+rcc*.go
