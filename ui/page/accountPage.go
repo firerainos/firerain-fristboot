@@ -79,6 +79,24 @@ func (page *AccountPage) initConnect() {
 	})
 }
 
+func (page *AccountPage) Check() bool {
+	if page.Username.Text() == "" {
+		page.SetTips("用户名不能为空")
+	} else if page.Hostname.Text() == "" {
+		page.SetTips("主机名不能为空")
+	} else if page.Password.Text() == "" {
+		page.SetTips("密码不能为空")
+	} else if page.AgainPassword.Text() == "" {
+		page.SetTips("确认密码不能为空")
+	} else if page.Password.Text() != page.AgainPassword.Text() {
+		page.SetTips("确认密码不匹配")
+	} else {
+		return true
+	}
+
+	return false
+}
+
 func (page *AccountPage) SetTips(tips string) {
 	page.tipsLabel.SetText(tips)
 }

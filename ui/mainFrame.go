@@ -93,10 +93,7 @@ func (m *MainFrame) initConnect() {
 		case "继续":
 			m.nextButton.SetText("确定")
 		case "确定":
-			password := m.accountPage.Password.Text()
-			againPassword := m.accountPage.AgainPassword.Text()
-			if password != againPassword {
-				m.accountPage.SetTips("确认密码不匹配")
+			if !m.accountPage.Check() {
 				return
 			}
 		}
