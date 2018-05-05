@@ -32,6 +32,6 @@ func (page *EndPage) init() {
 	page.SetLayout(vboxLayout)
 }
 
-func (page *EndPage) SetTips(tips string) {
-	page.tipsLabel.SetText(tips)
+func (page *EndPage) AddTips(tips string) {
+	page.tipsLabel.SetText(page.tipsLabel.Text()+"\n"+tips)
 }
