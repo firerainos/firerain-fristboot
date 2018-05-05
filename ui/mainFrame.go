@@ -4,6 +4,7 @@ import (
 	"github.com/firerainos/firerain-fristboot/ui/page"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"github.com/firerainos/firerain-fristboot/styles"
 )
 
 type MainFrame struct {
@@ -40,9 +41,16 @@ func (m *MainFrame) init() {
 	m.backButton = widgets.NewQPushButton2("返回", m)
 	m.nextButton = widgets.NewQPushButton2("继续", m)
 
+	m.backButton.SetMinimumWidth(60)
+	m.nextButton.SetMinimumWidth(60)
+
+	m.backButton.SetStyleSheet(styles.BackButton)
+	m.nextButton.SetStyleSheet(styles.NextButton)
+
 	m.backButton.SetVisible(false)
 
 	hboxLayout := widgets.NewQHBoxLayout()
+	hboxLayout.SetSpacing(40)
 
 	hboxLayout.AddStretch(1)
 	hboxLayout.AddWidget(m.backButton, 0, core.Qt__AlignHCenter)
@@ -54,8 +62,9 @@ func (m *MainFrame) init() {
 	m.stackLayout.AddWidget(m.endPage)
 
 	vboxLayout.AddLayout(m.stackLayout, 1)
+	vboxLayout.AddSpacing(50)
 	vboxLayout.AddLayout(hboxLayout, 1)
-	vboxLayout.AddSpacing(20)
+	vboxLayout.AddSpacing(50)
 
 	m.SetLayout(vboxLayout)
 }
