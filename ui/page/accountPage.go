@@ -5,8 +5,6 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
-	"log"
-	"os"
 )
 
 type AccountPage struct {
@@ -28,14 +26,11 @@ func NewAccountPage(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *Account
 }
 
 func (page *AccountPage) init() {
-	pwd, _ := os.Getwd()
-	log.Println(pwd)
-
 	vboxLayout := widgets.NewQVBoxLayout2(page)
 
 	logoLabel := widgets.NewQLabel(page, 0)
 
-	logoLabel.SetPixmap(gui.NewQPixmap5(pwd+"/resources/logo.png", "", 0).
+	logoLabel.SetPixmap(gui.NewQPixmap5(":/resources/logo.png", "", 0).
 		Scaled2(150, 150, core.Qt__KeepAspectRatioByExpanding, 0))
 	logoLabel.SetFixedSize2(150, 150)
 
@@ -45,10 +40,10 @@ func (page *AccountPage) init() {
 	page.tipsLabel.SetFixedWidth(200)
 	page.tipsLabel.SetAlignment(core.Qt__AlignCenter)
 
-	page.Username = widgets2.NewLineEdit(pwd+"/resources/username.svg", page)
-	page.Hostname = widgets2.NewLineEdit(pwd+"/resources/host.svg", page)
-	page.Password = widgets2.NewLineEdit(pwd+"/resources/password.svg", page)
-	page.AgainPassword = widgets2.NewLineEdit(pwd+"/resources/password.svg", page)
+	page.Username = widgets2.NewLineEdit(":/resources/username.svg", page)
+	page.Hostname = widgets2.NewLineEdit(":/resources/host.svg", page)
+	page.Password = widgets2.NewLineEdit(":/resources/password.svg", page)
+	page.AgainPassword = widgets2.NewLineEdit(":/resources/password.svg", page)
 
 	regExp := core.NewQRegExp()
 	regExp.SetPattern("^[a-z][-a-z0-9_]*$")
