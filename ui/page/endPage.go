@@ -24,6 +24,8 @@ func (page *EndPage) init() {
 	vboxLayout.SetContentsMargins(0, 0, 0, 0)
 
 	page.tipsLabel = widgets.NewQLabel2("请稍等...",page,0)
+	page.tipsLabel.SetAlignment(core.Qt__AlignCenter)
+	page.tipsLabel.SetMinimumHeight(200)
 
 	vboxLayout.AddStretch(1)
 	vboxLayout.AddWidget(page.tipsLabel,0,core.Qt__AlignCenter)
