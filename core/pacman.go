@@ -7,3 +7,9 @@ func SearchPackage(pkgname string) bool {
 
 	return cmd.Run() == nil
 }
+
+func RemoveFristBoot() bool {
+	cmd := exec.Command("pacman","-Rscn","firerain-fristboot")
+
+	return cmd.Run() == nil
+}
