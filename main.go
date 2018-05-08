@@ -7,10 +7,12 @@ import (
 )
 
 func main() {
-	widgets.NewQApplication(len(os.Args), os.Args)
+	app :=widgets.NewQApplication(len(os.Args), os.Args)
 
 	mainwindow := ui.NewMainWindow()
-	mainwindow.Show()
+	//mainwindow.Show()
+	mainwindow.SetFixedSize(app.Desktop().Geometry().Size())
+	mainwindow.ShowFullScreen()
 
-	os.Exit(widgets.QApplication_Exec())
+	os.Exit(app.Exec())
 }
