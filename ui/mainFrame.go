@@ -1,10 +1,12 @@
 package ui
 
 import (
+	core2 "github.com/firerainos/firerain-fristboot/core"
+	"github.com/firerainos/firerain-fristboot/styles"
 	"github.com/firerainos/firerain-fristboot/ui/page"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
-	"github.com/firerainos/firerain-fristboot/styles"
+	"os"
 )
 
 type MainFrame struct {
@@ -12,7 +14,7 @@ type MainFrame struct {
 
 	welcomePage *page.WelcomePage
 	accountPage *page.AccountPage
-	endPage *page.EndPage
+	endPage     *page.EndPage
 
 	backButton, nextButton *widgets.QPushButton
 
@@ -82,7 +84,7 @@ func (m *MainFrame) initConnect() {
 	})
 
 	m.backButton.ConnectClicked(func(checked bool) {
-		if m.nextButton.Text() == "确定"{
+		if m.nextButton.Text() == "确定" {
 			m.nextButton.SetText("继续")
 		}
 		m.stackLayout.SetCurrentIndex(m.stackLayout.CurrentIndex() - 1)
@@ -96,7 +98,37 @@ func (m *MainFrame) initConnect() {
 			if !m.accountPage.Check() {
 				return
 			}
+			go m.configuration()
+		case "开始使用":
+			os.Exit(0)
 		}
 		m.stackLayout.SetCurrentIndex(m.stackLayout.CurrentIndex() + 1)
 	})
+}
+
+func (m *MainFrame) configuration() {
+	username := m.accountPage.Username.Text()
+
+	if err := core2.UserAdd(username, m.accountPage.Password.Text()); err != nil {
+		m.endPage.AddTips("用户创建失败,请在点击开始使用后切换到tty2手动创建:\n")
+	}
+
+	if err := core2.SetHomeName(m.accountPage.Hostname.Text()); err != nil {
+		m.endPage.AddTips("主机名设置失败,可手动设置:\n")
+	}
+
+	if err := core2.SetLocale(username); err != nil {
+		m.endPage.AddTips("Locale设置失败,可手动设置:\n" + err.Error())
+	}
+
+	if err := core2.SetIM(username); err != nil {
+		m.endPage.AddTips("输入法环境变量设置失败,可手动设置:\n" + err.Error())
+	}
+
+	if !core2.RemoveFristBoot() {
+		m.endPage.AddTips("FristBoot卸载失败，请在登陆后手动卸载(sudo pacman -Rscn firerain-fristboot)")
+	}
+
+	m.nextButton.SetText("开始使用")
+	m.nextButton.SetVisible(true)
 }
