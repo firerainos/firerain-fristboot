@@ -8,6 +8,8 @@ import (
 
 func main() {
 	app :=widgets.NewQApplication(len(os.Args), os.Args)
+	app.SetApplicationName("firerain-fristboot")
+	app.SetApplicationVersion("0.0.1")
 
 	mainwindow := ui.NewMainWindow()
 	//mainwindow.Show()
