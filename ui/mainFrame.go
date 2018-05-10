@@ -117,17 +117,17 @@ func (m *MainFrame) configuration() {
 		m.endPage.AddTips("主机名设置失败,可手动设置:\n")
 	}
 
-	if err := core2.SetLocale(username); err != nil {
+	if err := core2.SetLocale(); err != nil {
 		m.endPage.AddTips("Locale设置失败,可手动设置:\n" + err.Error())
 	}
 
-	if err := core2.SetIM(username); err != nil {
+	if err := core2.SetIM(); err != nil {
 		m.endPage.AddTips("输入法环境变量设置失败,可手动设置:\n" + err.Error())
 	}
 
-	if !core2.RemoveFristBoot() {
-		m.endPage.AddTips("FristBoot卸载失败，请在登陆后手动卸载(sudo pacman -Rscn firerain-fristboot)")
-	}
+	//if !core2.RemoveFristBoot() {
+	//	m.endPage.AddTips("FristBoot卸载失败，请在登陆后手动卸载(sudo pacman -Rscn firerain-fristboot)")
+	//}
 
 	m.nextButton.SetText("开始使用")
 	m.nextButton.SetVisible(true)

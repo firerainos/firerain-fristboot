@@ -39,17 +39,17 @@ func SetHomeName(hostname string) error {
 	return ioutil.WriteFile("/etc/hostname",[]byte(hostname),0644)
 }
 
-func SetLocale(username string) error {
+func SetLocale() error {
 	profile := `#!/bin/bash
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 export LC_CTYPE=zh_CN.UTF-8
 `
 
-	return ioutil.WriteFile("/home/"+username+"/.xprofile",[]byte(profile),0644)
+	return ioutil.WriteFile("/etc/skel/.xprofile",[]byte(profile),0644)
 }
 
-func SetIM(username string) error {
+func SetIM() error {
 	profile := `
 export GTK_IM_MODULE=%s
 export QT_IM_MODULE=%s
@@ -65,7 +65,7 @@ export XMODIFIERS="@im=%s"
 		profile += "\nibus-daemon -x -d"
 	}
 
-	f, err := os.OpenFile("/home/"+username+"/.xprofile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
+	f, err := os.OpenFile("/etc/skel/.xprofile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
 	if err != nil {
 		return err
 	}
